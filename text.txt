@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine?</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom right, #ff9ecf, #ff4fa3);
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+        text-align: center;
+        color: white;
+    }
+
+    h1 {
+        margin-top: 15%;
+        font-size: 3em;
+    }
+
+    .btn {
+        padding: 15px 35px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        position: absolute;
+        transition: 0.2s ease;
+    }
+
+    #yesBtn {
+        background-color: white;
+        color: #ff1493;
+        left: 40%;
+        top: 60%;
+    }
+
+    #noBtn {
+        background-color: #ff0055;
+        color: white;
+        left: 55%;
+        top: 60%;
+    }
+
+    #celebration {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom right, #ff9ecf, #ff4fa3);
+        text-align: center;
+        padding-top: 15%;
+    }
+
+    #celebration h1 {
+        font-size: 2.5em;
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Will You Be My Valentine? 💘</h1>
+
+<button id="yesBtn" class="btn">Yes 💖</button>
+<button id="noBtn" class="btn">No 😢</button>
+
+<div id="celebration">
+    <h1>🎉 Congratulations! 🎉</h1>
+    <p style="font-size:1.5em;">
+        Your valentine will take you on an amazing date  
+        Saturday February 14th at 5pm 💕
+    </p>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const celebration = document.getElementById("celebration");
+
+    // Move "No" button randomly when hovered
+    noBtn.addEventListener("mouseover", () => {
+        const maxX = window.innerWidth - noBtn.offsetWidth;
+        const maxY = window.innerHeight - noBtn.offsetHeight;
+
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+    });
+
+    // YES button click
+    yesBtn.addEventListener("click", () => {
+        celebration.style.display = "block";
+        startConfetti();
+    });
+
+    // Confetti animation
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+    const numberOfPieces = 150;
+
+    for (let i = 0; i < numberOfPieces; i++) {
+        confettiPieces.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 8 + 4,
+            speed: Math.random() * 3 + 2,
+            color: `hsl(${Math.random() * 360}, 100%, 75%)`
+        });
+    }
+
+    function startConfetti() {
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            confettiPieces.forEach(piece => {
+                piece.y += piece.speed;
+                if (piece.y > canvas.height) piece.y = 0;
+
+                ctx.fillStyle = piece.color;
+                ctx.fillRect(piece.x, piece.y, piece.size, piece.size);
+            });
+
+            requestAnimationFrame(update);
+        }
+        update();
+    }
+</script>
+
+</body>
+</html>
